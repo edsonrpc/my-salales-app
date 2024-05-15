@@ -1,9 +1,14 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatTableModule, MatTable } from '@angular/material/table';
+import { MatTableModule, MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
-import { CategoriasDataSource, CategoriasItem } from './categorias-datasource';
-
+import { CategoriasItem } from './categorias-datasource';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { Categoria } from './categoria.dto';
+import { CategoriasService } from './categorias.service';
+import { lastValueFrom } from 'rxjs';
+import { CategoriaFormComponent } from './form/categoria-form.component';
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.component.html',
@@ -14,20 +19,52 @@ import { CategoriasDataSource, CategoriasItem } from './categorias-datasource';
     
   `,
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule]
+  imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatCardModule, MatButtonModule, CategoriaFormComponent]
 })
+
+
 export class CategoriasComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<CategoriasItem>;
-  dataSource = new CategoriasDataSource();
+  dataSource = new MatTableDataSource<Categoria>();
+  categoria!: Categoria
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['id', 'name', 'description', 'actions'];
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+    this.loadCategorias()
   }
+
+  showForm: boolean = false;
+  constructor(private categoriasService: CategoriasService) { }
+
+  async loadCategorias(): Promise<void> {
+    const categoria = await lastValueFrom(this.categoriasService.getAll())
+    this.dataSource = new MatTableDataSource(categoria)
+    this.table.dataSource = this.dataSource
+    this, this.dataSource.paginator = this.paginator
+  }
+
+  onNovaCategoria() {
+    this.showForm = true;
+  }
+
+  hideCategoriaForm() {
+    this.showForm = false;
+    this.loadCategorias();
+  }
+
+  onSave(categoria: Categoria) {
+    const saved = lastValueFrom(this.categoriasService.save(categoria))
+    console.log('#### salvei? ', saved);
+    this.hideCategoriaForm();
+  }
+
+  onEditCategorias(catergoria: Categoria) {
+    console.log('######## categoria a ser editada: ', catergoria);
+
+  }
+
 }
