@@ -20,4 +20,8 @@ export class CategoriasService {
       return this.http.put<Categoria>(environment.api + 'categories/' + categoria.id, categoria)
     return this.http.post<Categoria>(environment.api + 'categories/', categoria)
   }
+
+  public delete(id: number) {
+    return this.http.delete(environment.api + 'categories/' + id)
+  }
 }

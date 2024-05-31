@@ -6,8 +6,8 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 
 // TODO: Replace this with your own data model type
 export interface CategoriasItem {
-  name: string;
   id: number;
+  name: string;
 }
 
 // TODO: replace this with real data from your application

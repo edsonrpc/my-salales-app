@@ -19,27 +19,27 @@ import { Categoria } from '../categoria.dto';
 })
 export class CategoriaFormComponent {
 
-  @Output() back = new EventEmitter();
-  @Output() save = new EventEmitter<Categoria>();
-  @Input() set categoria(categoria: Categoria) {
-    console.log('######## ser categoria');
+  @Output() back = new EventEmitter()
+  @Output() save = new EventEmitter<Categoria>()
 
-    this.categoriaForm.setValue(categoria)
-  }
-
-  constructor(private formBuilde: FormBuilder) { }
-  categoriaForm = this.formBuilde.group({
-    id: [null],
+  constructor(private formBuilder: FormBuilder) { }
+  categoriaForm = this.formBuilder.group({
+    id: [0],
     name: ['', [Validators.required, Validators.minLength(3)]],
     description: ['', Validators.required]
   })
 
+  @Input() set categoria(categoria: Categoria) {
+    console.log('######## ser categoria', categoria)
+    this.categoriaForm.setValue(categoria)
+  }
+
   onSubmit() {
     console.log('###### submit', this.categoriaForm.value);
-    this.save.emit(this.categoriaForm.value as unknown as Categoria);
+    this.save.emit(this.categoriaForm.value as Categoria)
   }
 
   onBack() {
-    this.back.emit();
+    this.back.emit()
   }
 }

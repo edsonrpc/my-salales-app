@@ -4,6 +4,8 @@
     <mat-card-subtitle>Lista de categorias</mat-card-subtitle>
   </mat-card-header>
 
+  <loading-bar [visible]="showLoading"></loading-bar>
+
   @if(showForm) {
   <categoria-form (back)="hideCategoriaForm()" (save)="onSave($event)" [categoria]="categoria"></categoria-form>
   } @else {
@@ -27,7 +29,12 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
         <td mat-cell *matCellDef="let row">
-          <button mat-button (click)="onEditCategorias(row)">Editar</button>
+          <button mat-icon-button color="warm" (click)="onEditCategorias(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warm" (click)="onDeleteCategoria(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </td>
       </ng-container>
 

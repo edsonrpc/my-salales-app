@@ -9,6 +9,9 @@ import { Categoria } from './categoria.dto';
 import { CategoriasService } from './categorias.service';
 import { lastValueFrom } from 'rxjs';
 import { CategoriaFormComponent } from './form/categoria-form.component';
+import { MatIconModule } from '@angular/material/icon';
+import { LoadingBarComponent } from '../../loading-bar.component';
+
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.component.html',
@@ -19,7 +22,16 @@ import { CategoriaFormComponent } from './form/categoria-form.component';
     
   `,
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatCardModule, MatButtonModule, CategoriaFormComponent]
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    CategoriaFormComponent,
+    LoadingBarComponent
+  ]
 })
 
 
@@ -29,9 +41,10 @@ export class CategoriasComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<CategoriasItem>;
   dataSource = new MatTableDataSource<Categoria>();
   categoria!: Categoria
+  showLoading = false;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name', 'description', 'actions'];
+  displayedColumns = ['id', 'name', 'description', 'actions']
 
   ngAfterViewInit(): void {
     this.loadCategorias()
@@ -41,30 +54,46 @@ export class CategoriasComponent implements AfterViewInit {
   constructor(private categoriasService: CategoriasService) { }
 
   async loadCategorias(): Promise<void> {
+    this.showLoading = true;
     const categoria = await lastValueFrom(this.categoriasService.getAll())
     this.dataSource = new MatTableDataSource(categoria)
     this.table.dataSource = this.dataSource
-    this, this.dataSource.paginator = this.paginator
+    this.dataSource.sort = this.sort
+    this.dataSource.paginator = this.paginator
+    this.showLoading = false;
   }
 
   onNovaCategoria() {
-    this.showForm = true;
+    this.categoria = {
+      id: 0,
+      name: '',
+      description: ''
+    }
+    this.showForm = true
   }
 
   hideCategoriaForm() {
-    this.showForm = false;
-    this.loadCategorias();
+    this.showForm = false
+    this.loadCategorias()
   }
 
   onSave(categoria: Categoria) {
     const saved = lastValueFrom(this.categoriasService.save(categoria))
     console.log('#### salvei? ', saved);
-    this.hideCategoriaForm();
+    this.hideCategoriaForm()
   }
 
   onEditCategorias(catergoria: Categoria) {
-    console.log('######## categoria a ser editada: ', catergoria);
-
+    this.categoria = catergoria
+    this.showForm = true;
   }
 
+  async onDeleteCategoria(categoria: Categoria) {
+    if (confirm(`Apagar ${categoria.name} com o id ${categoria.id}?`)) {
+      this.showLoading = true;
+      await lastValueFrom(this.categoriasService.delete(categoria.id))
+      this.showLoading = false
+      this.loadCategorias()
+    }
+  }
 }
