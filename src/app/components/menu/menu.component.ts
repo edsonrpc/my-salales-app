@@ -35,7 +35,7 @@ export class MenuComponent {
       label: 'Categorias'
     },
     {
-      path: '/fornecedores',
+      path: '/suppliers',
       label: 'Fornecedores'
     }
   ]

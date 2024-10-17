@@ -1,0 +1,90 @@
+
+<form [formGroup]="fornecedorForm" (ngSubmit)="onSubmit()">
+    <div class="container">
+        <mat-form-field class="item">
+            <input
+                matInput
+                placeholder="Company Name"
+                formControlName="companyName"
+            />
+            @if (fornecedorForm.controls['companyName'].hasError('required')) {
+                <mat-error> Nome da empresa é obrigatório.</mat-error>
+            } @if (fornecedorForm.controls['companyName'].hasError('minlength')) {
+                <mat-error> Nome da empresa muito curto.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div class="container">
+        <mat-form-field class="item">
+            <input matInput
+                    placeholder="Contact name"
+                    formControlName="contactName"
+            />
+            @if (fornecedorForm.controls['contactName'].hasError('required')) {
+                <mat-error> Nome é obrigatório.</mat-error>
+            } @if (fornecedorForm.controls['contactName'].hasError('minlength')) {
+                <mat-error> Nome muito curto.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="item">
+            <input matInput
+                    placeholder="Contact Title"
+                    formControlName="contactTitle"
+            />
+            @if (fornecedorForm.controls['contactTitle'].hasError('required')) {
+                <mat-error> Título é obrigatório.</mat-error>
+            } @if (fornecedorForm.controls['contactTitle'].hasError('minlength')) {
+                <mat-error> Título muito curto.</mat-error>
+            }
+        </mat-form-field>
+    </div>
+
+    <br />
+
+    <mat-card-subtitle>Endereço</mat-card-subtitle>
+
+    <div class="container" formGroupName="address">
+        <!-- street -->
+         <mat-form-field class="item">
+            <input matInput placeholder="Rua" formControlName="street" />
+         </mat-form-field>
+    </div>
+    <div class="container" formGroupName="address">
+        <!-- city -->
+         <mat-form-field class="item">
+            <input matInput placeholder="Cidade" formControlName="city" />
+         </mat-form-field>
+
+         <!-- Region -->
+        <mat-form-field class="item">
+            <input matInput placeholder="Region" formControlName="region" />
+        </mat-form-field>
+
+        <!-- country -->
+         <mat-form-field class="item">
+            <input matInput placeholder="Regiao" formControlName="country" />
+         </mat-form-field>
+    </div>
+    <div class="container" formGroupName="address">
+        <!-- postal code -->
+         <mat-form-field class="item">
+            <input matInput placeholder="CEP" formControlName="postalCode" />
+         </mat-form-field>
+
+        <!-- Phone -->
+         <mat-form-field class="item">
+            <input matInput placeholder="Telefone" formControlName="phone" />
+         </mat-form-field>
+    </div>
+
+    <mat-card-actions class="container">
+        <button mat-button (click)="(onBack($event))">Voltar</button>
+        <div class="width-full"></div>
+        <button mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="fornecedorForm.invalid"
+                (click)="(onSubmit())"
+        >Salvar</button>
+    </mat-card-actions>
+</form>

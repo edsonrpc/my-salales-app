@@ -1,15 +1,13 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core'
-import { MatTableModule, MatTable, MatTableDataSource } from '@angular/material/table'
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator'
-import { MatSortModule, MatSort } from '@angular/material/sort'
+import { MatTable, MatTableDataSource } from '@angular/material/table'
+import { MatPaginator } from '@angular/material/paginator'
+import { MatSort } from '@angular/material/sort'
+import { MaterialModule } from '../../material.module'
 import { CategoriasItem } from './categorias-datasource'
-import { MatCardModule } from '@angular/material/card'
-import { MatButtonModule } from '@angular/material/button'
 import { Categoria } from './categoria.dto'
 import { CategoriasService } from './categorias.service'
 import { lastValueFrom } from 'rxjs'
 import { CategoriaFormComponent } from './form/categoria-form.component'
-import { MatIconModule } from '@angular/material/icon'
 import { LoadingBarComponent } from '../../loading-bar.component'
 
 @Component({
@@ -23,12 +21,7 @@ import { LoadingBarComponent } from '../../loading-bar.component'
   `,
   standalone: true,
   imports: [
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
+    MaterialModule,
     CategoriaFormComponent,
     LoadingBarComponent
   ]
@@ -81,6 +74,7 @@ export class CategoriasComponent implements AfterViewInit {
     const saved = lastValueFrom(this.categoriasService.save(categoria))
     console.log('#### salvei? ', saved)
     this.hideCategoriaForm()
+    this.loadCategorias()
   }
 
   onEditCategorias(catergoria: Categoria) {

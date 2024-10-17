@@ -1,18 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
+// import { MatButtonModule } from '@angular/material/button';
+// import { MatCardModule } from '@angular/material/card';
+// import { MatInputModule } from '@angular/material/input';
+import { MaterialModule } from '../../../material.module';
 import { Categoria } from '../categoria.dto';
 
 @Component({
   selector: 'categoria-form',
   standalone: true,
   imports: [
-    MatCardModule,
-    MatButtonModule,
+    MaterialModule,
     ReactiveFormsModule,
-    MatInputModule
   ],
   templateUrl: './categoria-form.component.html',
   styleUrl: './categoria-form.component.css'
@@ -35,7 +34,7 @@ export class CategoriaFormComponent {
   }
 
   onSubmit() {
-    console.log('###### submit', this.categoriaForm.value);
+    console.log('###### submit', this.categoriaForm.value)
     this.save.emit(this.categoriaForm.value as Categoria)
   }
 

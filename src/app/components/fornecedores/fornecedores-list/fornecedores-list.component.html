@@ -1,0 +1,16 @@
+<mat-card-subtitle> Listando os fornecedores </mat-card-subtitle>
+@if (fornecedorObservable | async) {
+<!-- <div>Encontrado {{ fornecedores.length }} fornecedores</div> -->
+    <div class="container wrap">
+        @for(fornecedor of fornecedores; track fornecedor.id) {
+            <app-fornecedor-card [fornecedor]="fornecedor"></app-fornecedor-card>
+        } @empty {
+            <span>Sem fornecedores. Por favor, crie um no botão "Novo"</span>
+        }
+    </div>
+} @else {
+<loading-bar></loading-bar>
+}
+<mat-card-actions>
+    <button mat-button [routerLink]="['/suppliers/new']">Novo</button>
+</mat-card-actions>

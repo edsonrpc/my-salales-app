@@ -1,0 +1,11 @@
+<mat-card-subtitle>Criação de Fornecedor</mat-card-subtitle>
+<br />
+@if (fornecedoresObservable | async) {
+    <app-fornecedores-form
+        [fornecedor]="fornecedor"
+        (save)="onSave($event)"
+        (back)="onBack()"
+    ></app-fornecedores-form>
+} @else {
+    <loading-bar></loading-bar>
+}

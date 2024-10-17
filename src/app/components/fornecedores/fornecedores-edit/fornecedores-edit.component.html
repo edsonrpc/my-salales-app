@@ -1,0 +1,21 @@
+<mat-card-subtitle>Editar Fornecedor</mat-card-subtitle>
+
+<br />
+
+@if (fornecedorObservable | async) {
+<mat-card-content>
+    <app-fornecedores-form
+        (save)="onSave($event)"
+        (back)="onBack()"
+        [fornecedor]="fornecedor"
+></app-fornecedores-form>
+</mat-card-content>
+<mat-card-actions class="container">
+    <button mat-button [routerLink]="['/suppliers']">Voltar</button>
+    <!-- <div class="width-full"></div>
+    <button mat-raised-button color="primary" [routerLink]="['/fornecedores/edit/', fornecedor.id]">Editar</button> -->
+</mat-card-actions>
+
+} @else {
+<loading-bar></loading-bar>
+}
